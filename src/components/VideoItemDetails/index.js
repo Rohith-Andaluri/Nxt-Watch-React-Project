@@ -111,24 +111,15 @@ class VideoItemDetails extends Component {
   )
 
   renderVideoDetailsOnSuccess = () => {
-    const {videoDetails, isLike, isDislike} = this.state
+    const {videoDetails, isLike, isDislike, isSaved} = this.state
 
     return (
       <ThemeContext.Consumer>
         {value => {
-          const {isDarkTheme, saveVideoButtonClicked, savedVideosList} = value
+          const {isDarkTheme, saveVideoButtonClicked} = value
           const likeIconClassName = isLike ? 'selected' : 'not-selected'
           const dislikeIconClassName = isDislike ? 'selected' : 'not-selected'
-
-          let isSaved
-          const index = savedVideosList.findIndex(
-            eachVideo => eachVideo.id === videoDetails.id,
-          )
-          if (index === -1) {
-            isSaved = false
-          } else {
-            isSaved = true
-          }
+          
           const saveButtonIconClassName = isSaved ? 'selected' : 'not-selected'
           const saveButtonText = isSaved ? 'Saved' : 'Save'
 
@@ -188,15 +179,20 @@ class VideoItemDetails extends Component {
                       Dislike
                     </Button>
                   </ButtonContainer>
-                  <Button
+                  <ButtonContainer
+                    active={isSaved}
                     onClick={onSaveButtonClicked}
-                    className={saveButtonIconClassName}
                   >
                     <BiListPlus
-                      className={`icon-in-video-item ${saveButtonIconClassName} `}
+                      className={`icon-in-video-item ${saveButtonIconClassName}`}
                     />
-                    {saveButtonText}
-                  </Button>
+                    <Button
+                      active={isSaved}
+                      className={saveButtonIconClassName}
+                    >
+                      {saveButtonText}
+                    </Button>
+                  </ButtonContainer>
                 </RightDynamicContainer>
               </DynamicDataContainer>
               <HorizontalLine />
